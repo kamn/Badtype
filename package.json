@@ -1,0 +1,19 @@
+{
+  "name": "Badtype",
+  "version": "0.0.1",
+  "description": "A javascript optional type system",
+  "main": "index.js",
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kamn/Badtype.git"
+  },
+  "author": "Kamn",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kamn/Badtype/issues"
+  },
+  "homepage": "https://github.com/kamn/Badtype"
+}
