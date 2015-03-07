@@ -4,7 +4,8 @@
   "description": "A javascript optional type system",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test test/types --require test/helpers/chai.js"
+    "test": "mocha test test/types test/src --require test/helpers/chai.js",
+    "jshint": "jshint . --exclude ./node_modules ; true"
   },
   "repository": {
     "type": "git",
@@ -19,6 +20,7 @@
   "devDependencies": {
     "chai": "^2.1.1",
     "esprima": "^1.2.5",
+    "jshint": "^2.6.3",
     "mocha": "^2.1.0",
     "sinon": "^1.12.2"
   }

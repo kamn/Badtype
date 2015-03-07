@@ -19,6 +19,16 @@ describe('Number', function(){
 		});
 	});
 
+	describe('Objects with Ints', function(){
+		it('should be detected', function(){
+			expect(false).to.be.true;
+		});
+	
+		it('should detect reassignment', function(){
+			expect(false).to.be.true;
+		});
+	});
+
 	describe('Function Argument', function(){
 		it('should detect an argument to be a number', function(){
 			expect(false).to.be.true;
