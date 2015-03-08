@@ -14,7 +14,7 @@ var typeParse = function(ast){
 //Looks to see if a comment is a bad type comment
 var isBadtypeComment = function(str){
 	//TODO: Check that the string starts with //:!
-	return str.indexOf('//:!') === 0
+	return str.indexOf(':!') === 0
 };
 
 //NOTE: example comment
@@ -33,8 +33,47 @@ var isBadtypeNewTypeComment = function(str){
 };
 
 
+var isNotEmptyStr = function(str){
+	return str !== '';
+};
+
+//Get the marked type
+var getBadType = function(str){
+
+	var split_str = str.split(' ').filter(isNotEmptyStr);
+	//TODO: Find first ':!'
+
+	return split_str[1];
+};
+
+//
+var parseBadTypeComment = function(str){
+	return str;
+};
+
+var traverseAST = function(fn, node){
+	if(!node){
+		return;
+	}
+
+	fn(node);
+
+	for (key in node){
+		var child = node[key];
+		if(Array.isArray(child)){
+			child.forEach(function(n){
+				traverseAST(fn, n);
+			});
+		} else if( typeof child.type === 'string'){
+			traverseAST(fn, child);
+		}
+	}
+};
+
 
 
 module.exports.parse = parse;
 module.exports.typeParse = typeParse;
 module.exports.isBadtypeComment = isBadtypeComment;
+module.exports.getBadType = getBadType;
+module.exports.traverseAST = traverseAST;
