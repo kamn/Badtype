@@ -3,7 +3,10 @@ var esprima = require('esprima');
 
 //Generates an ast from esprima
 var parse = function(code){
-	return esprima.parse(code, {comment: true});
+	return esprima.parse(code, {
+		comment: true,
+		attachComment: true
+	});
 };
 
 //Traverses the AST and trys to figure out if Badtypes need to be assigned
@@ -65,11 +68,29 @@ var traverseAST = function(fn, node){
 			child.forEach(function(n){
 				traverseAST(fn, n);
 			});
-		} else if( typeof child.type === 'string'){
+		} else if(child != null && typeof child.type === 'string'){
 			traverseAST(fn, child);
 		}
 	}
 };
+
+var isDeclarator = function(node){
+	return node.type === 'VariableDeclarator';
+};
+
+var getDeclaratorType = function(node){
+	var type = node.init.type;
+	if(type === 'Literal'){
+		var val = node.init.value;
+		if(typeof val === 'number'){
+			return 'Number';
+		}else if(typeof val === 'string'){
+			return 'String';
+		}
+	}else if(type === 'ObjectExpression'){
+		return 'Object';
+	}
+}
 
 
 
@@ -81,3 +102,4 @@ module.exports.parseBadtypeComment = parseBadtypeComment;
 module.exports.isBadtypeNewTypeComment = isBadtypeNewTypeComment;
 module.exports.getBadType = getBadType;
 module.exports.traverseAST = traverseAST;
+module.exports.getDeclaratorType = getDeclaratorType;

@@ -27,11 +27,66 @@ describe('Parser', function(){
 			var spy = sinon.spy();
 			parser.traverseAST(spy, ast);
 
-			//console.log(spy);
-			expect(spy.callCount).to.equal(5);
+			expect(spy.callCount).to.equal(13);
+		});
+
+		
+
+
+		it('should traverse a tree and not fail on null', function(){
+			var ast = parser.parse('var f = function(){}');
+			var spy = sinon.spy();
+			expect(parser.traverseAST).to.not.throw();
+			parser.traverseAST(spy, ast);
 			console.log(JSON.stringify(ast, null, 4));
+			});
+
+		it('should traverse a tree and test', function(){
+			var ast = parser.parse('var f = {}');
+			var spy = sinon.spy();
+			//expect(parser.traverseAST).to.not.throw();
+			//parser.traverseAST(spy, ast);
+			//console.log(spy.callCount);
+			//expect(spy.callCount).to.equal(25);
+			console.log(JSON.stringify(ast, null, 4));
+			});
+
+});
+
+	describe('Auto-detection', function(){
+		it('should detect VariableDeclarator as Number', function(){
+			var ast = parser.parse('var a = 5');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorType(declarator);
+			console.log(type);
+			//console.log(JSON.stringify(declarator, null, 4));
+			expect(type).to.equal('Number');
+		});
+
+		it('should detect as String', function(){
+			var ast = parser.parse('var a = "a"');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorType(declarator);
+			expect(type).to.equal('String');
+
+		});
+
+		it('should detect objects', function(){
+			var ast = parser.parse('var a = {}');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorType(declarator);
+			expect(type).to.equal('Object');
 		});
 	});
 
+
+	describe('Re-assignments', function(){
+		it('should detect a variable is being reassigned to another type', function(){
+
+		});
+	});
 });
 
