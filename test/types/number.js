@@ -1,4 +1,7 @@
 'use strict';
+var chai = require('chai');
+var expect = chai.expect;
+
 describe('Number', function(){
 
 	describe('Assignment', function(){

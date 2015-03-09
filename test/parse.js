@@ -1,3 +1,4 @@
+'use strict';
 var parser = require('../src/parser');
 var expect = require('chai').expect;
 var sinon = require('sinon');
@@ -28,7 +29,7 @@ describe('Parser', function(){
 
 			//console.log(spy);
 			expect(spy.callCount).to.equal(5);
-			//console.log(JSON.stringify(ast, null, 4));
+			console.log(JSON.stringify(ast, null, 4));
 		});
 	});
 

@@ -1,8 +1,9 @@
+'use strict';
 var esprima = require('esprima');
 
 //Generates an ast from esprima
 var parse = function(code){
-	return esprima.parse(code);
+	return esprima.parse(code, {comment: true});
 };
 
 //Traverses the AST and trys to figure out if Badtypes need to be assigned
@@ -14,7 +15,7 @@ var typeParse = function(ast){
 //Looks to see if a comment is a bad type comment
 var isBadtypeComment = function(str){
 	//TODO: Check that the string starts with //:!
-	return str.indexOf(':!') === 0
+	return str.indexOf(':!') === 0;
 };
 
 //NOTE: example comment
@@ -22,14 +23,14 @@ var isBadtypeComment = function(str){
 //:! (Num, Str, Fn) -> Obj
 //Checks if it s a function type definition
 var isBadtypeFunctionComment = function(str){
-	return false;
+	return str;
 };
 
 //Note: Example comment
 //:! data PosNum = 0..
 
 var isBadtypeNewTypeComment = function(str){
-	return false;
+	return str;
 };
 
 
@@ -47,7 +48,7 @@ var getBadType = function(str){
 };
 
 //
-var parseBadTypeComment = function(str){
+var parseBadtypeComment = function(str){
 	return str;
 };
 
@@ -58,7 +59,7 @@ var traverseAST = function(fn, node){
 
 	fn(node);
 
-	for (key in node){
+	for (var key in node){
 		var child = node[key];
 		if(Array.isArray(child)){
 			child.forEach(function(n){
@@ -75,5 +76,8 @@ var traverseAST = function(fn, node){
 module.exports.parse = parse;
 module.exports.typeParse = typeParse;
 module.exports.isBadtypeComment = isBadtypeComment;
+module.exports.isBadtypeFunctionComment = isBadtypeFunctionComment;
+module.exports.parseBadtypeComment = parseBadtypeComment;
+module.exports.isBadtypeNewTypeComment = isBadtypeNewTypeComment;
 module.exports.getBadType = getBadType;
 module.exports.traverseAST = traverseAST;
