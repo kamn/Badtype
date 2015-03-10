@@ -11,8 +11,11 @@ var parse = function(code){
 
 //Traverses the AST and trys to figure out if Badtypes need to be assigned
 var typeParse = function(ast){
+	var typeAST = parse(ast);
+	traverseAST(typeAssignment, typeAST);
+	return typeAST;
 	//TODO: Traverse the tree looking to see if comments can be added into types
-	return ast;
+	//return ast;
 };
 
 //Looks to see if a comment is a bad type comment
@@ -55,8 +58,14 @@ var parseBadtypeComment = function(str){
 	return str;
 };
 
-var typeAssignment = function(){
-	
+var typeAssignment = function(node){
+	if(isDeclarator(node)){
+		var type = getDeclaratorType(node);
+
+		node.id.badtype = {
+			type: type
+		};
+	}
 };
 
 
