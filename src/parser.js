@@ -55,6 +55,11 @@ var parseBadtypeComment = function(str){
 	return str;
 };
 
+var typeAssignment = function(){
+	
+};
+
+
 var traverseAST = function(fn, node){
 	if(!node){
 		return;
@@ -89,6 +94,10 @@ var getDeclaratorType = function(node){
 		}
 	}else if(type === 'ObjectExpression'){
 		return 'Object';
+	}else if(type === 'ArrayExpression'){
+		return 'Array';//Determine type?
+	}else if(type === 'FunctionExpression'){
+		return 'Function';//Determine type?
 	}
 }
 

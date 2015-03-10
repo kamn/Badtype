@@ -42,7 +42,7 @@ describe('Parser', function(){
 			});
 
 		it('should traverse a tree and test', function(){
-			var ast = parser.parse('var f = {}');
+			var ast = parser.parse('var f = []');
 			var spy = sinon.spy();
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
@@ -80,12 +80,29 @@ describe('Parser', function(){
 			var type = parser.getDeclaratorType(declarator);
 			expect(type).to.equal('Object');
 		});
+
+		it('should detect arrays', function(){
+			var ast = parser.parse('var a = []');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorType(declarator);
+			expect(type).to.equal('Array');
+		});
+
+		it('should detect function', function(){
+			var ast = parser.parse('var a = function(){}');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorType(declarator);
+			expect(type).to.equal('Function');
+		});
+
 	});
 
 
 	describe('Re-assignments', function(){
 		it('should detect a variable is being reassigned to another type', function(){
-
+			
 		});
 	});
 });
