@@ -34,15 +34,17 @@ describe('Parser', function(){
 
 
 		it('should traverse a tree and not fail on null', function(){
-			var ast = parser.parse('var f = function(){}');
+			var ast = parser.typeParse('var a = 1; var b = "2"; var c = {}');
 			var spy = sinon.spy();
+			ast = parser.getBlockVars(ast, {});
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
-			//console.log(JSON.stringify(ast, null, 4));
+			console.log(JSON.stringify(ast, null, 4));
 			});
 
 		it('should traverse a tree and test', function(){
-			var ast = parser.typeParse('var f = []');
+			var ast = parser.typeParse('(function(){var a = 5;}())');
+			//var ast = parser.typeParse('function(){ var f = [], a = 5; \n var b = "z"; }');
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
 			//console.log(spy.callCount);

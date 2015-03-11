@@ -68,13 +68,51 @@ var typeAssignment = function(node){
 	}
 };
 
+var typeCheck = function(){}
+
+
+//:! (AST, Obj) -> Obj
+var getBlockVars = function(ast, varObj){
+	//TODO: Scan entire block.
+	//TODO: Skip functions
+
+	var getBlockVariable = function(node){
+		if(node.type === 'FunctionExpression'){
+			return false;
+		}
+
+		if(node.type === 'VariableDeclarator'){
+			var name = node.id.name;
+			varObj[name] = node;
+		}
+	};
+
+	traverseAST(getBlockVariable, ast)
+
+	return varObj;
+}
+
+var traverseWithStack = function(){
+
+	var stack = [];
+	var walk = function(){
+
+	};
+
+};
+
 
 var traverseAST = function(fn, node){
 	if(!node){
 		return;
 	}
 
-	fn(node);
+	var cont = fn(node);
+
+	//TODO: Have the function return true or false
+	if(cont === false){
+		return;
+	}
 
 	for (var key in node){
 		var child = node[key];
@@ -121,3 +159,4 @@ module.exports.isBadtypeNewTypeComment = isBadtypeNewTypeComment;
 module.exports.getBadType = getBadType;
 module.exports.traverseAST = traverseAST;
 module.exports.getDeclaratorType = getDeclaratorType;
+module.exports.getBlockVars = getBlockVars
