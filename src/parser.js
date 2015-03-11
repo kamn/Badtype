@@ -2,6 +2,10 @@
 var esprima = require('esprima');
 
 //Generates an ast from esprima
+
+//:! data AST = Obj
+
+//:! (String) -> AST
 var parse = function(code){
 	return esprima.parse(code, {
 		comment: true,
@@ -10,6 +14,7 @@ var parse = function(code){
 };
 
 //Traverses the AST and trys to figure out if Badtypes need to be assigned
+//:! (AST) -> AST
 var typeParse = function(ast){
 	var typeAST = parse(ast);
 	traverseAST(typeAssignment, typeAST);
@@ -19,6 +24,7 @@ var typeParse = function(ast){
 };
 
 //Looks to see if a comment is a bad type comment
+//:! (String) -> Bool
 var isBadtypeComment = function(str){
 	//TODO: Check that the string starts with //:!
 	return str.indexOf(':!') === 0;
@@ -101,7 +107,7 @@ var traverseWithStack = function(){
 
 };
 
-
+//:! (Function, AST) -> ?
 var traverseAST = function(fn, node){
 	if(!node){
 		return;
@@ -126,10 +132,13 @@ var traverseAST = function(fn, node){
 	}
 };
 
+//:! (AST) -> Bool
 var isDeclarator = function(node){
 	return node.type === 'VariableDeclarator';
 };
 
+
+//:! (AST) -> String
 var getDeclaratorType = function(node){
 	var type = node.init.type;
 	if(type === 'Literal'){
