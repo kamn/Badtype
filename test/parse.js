@@ -39,7 +39,7 @@ describe('Parser', function(){
 			ast = parser.getBlockVars(ast, {});
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
-			console.log(JSON.stringify(ast, null, 4));
+			//console.log(JSON.stringify(ast, null, 4));
 			});
 
 		it('should traverse a tree and test', function(){
@@ -49,7 +49,7 @@ describe('Parser', function(){
 			//parser.traverseAST(spy, ast);
 			//console.log(spy.callCount);
 			//expect(spy.callCount).to.equal(25);
-			console.log(JSON.stringify(ast, null, 4));
+			//console.log(JSON.stringify(ast, null, 4));
 			});
 
 });
@@ -60,8 +60,6 @@ describe('Parser', function(){
 			var declarator = ast.body[0].declarations[0];
 
 			var type = parser.getDeclaratorType(declarator);
-			console.log(type);
-			//console.log(JSON.stringify(declarator, null, 4));
 			expect(type).to.equal('Number');
 		});
 
