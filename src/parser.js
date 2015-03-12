@@ -81,16 +81,34 @@ var typeCheckParse = function(ast, prevBlocks){
 
 	//TODO: Get the blockVars
 	var blockVars = getBlockVars(ast, {});
+
+
+	var typeCheckFn = function(node){
+		if(node.type === 'FunctionExpression'){
+			return false;
+		}
+
+		if(node.type === 'AssignmentExpression'){
+			//Get object's identity
+			var ident = node.left.name;
+
+			//TODO: Search the chain
+			var typeInfo = blockVars[ident];
+
+			//Check type
+			var type = getDeclaratorType(node.right);
+
+			//Check type
+			if(type !== typeInfo.id.badtype.type){
+				throw Error('Mismatch');
+			}
+		}
+	};
+
+	traverseAST(typeCheckFn, ast);
+
+	return true;
 };
-
-var typeCheckFn = function(node){
-	if(node.type === 'FunctionExpression'){
-		return false;
-	}
-	
-	
-}
-
 
 //:! (AST, Obj) -> Obj
 var getBlockVars = function(ast, varObj){
@@ -111,10 +129,10 @@ var getBlockVars = function(ast, varObj){
 		}
 	};
 
-	traverseAST(getBlockVariable, ast)
+	traverseAST(getBlockVariable, ast);
 
 	return varObj;
-}
+};
 
 var traverseWithStack = function(){
 
@@ -183,6 +201,7 @@ var getDeclaratorType = function(node){
 
 module.exports.parse = parse;
 module.exports.typeParse = typeParse;
+module.exports.typeCheckParse = typeCheckParse;
 module.exports.isBadtypeComment = isBadtypeComment;
 module.exports.isBadtypeFunctionComment = isBadtypeFunctionComment;
 module.exports.parseBadtypeComment = parseBadtypeComment;

@@ -100,7 +100,21 @@ describe('Parser', function(){
 
 
 	describe('Re-assignments', function(){
+
+		it('should ignore valid assignments', function(){
+			var ast = parser.typeParse('var a = 1; a = 5;');
+			var ast = parser.typeCheckParse(ast, []);
+			//expect(parser.traverseAST).to.not.throw();
+		});
+
 		it('should detect a variable is being reassigned to another type', function(){
+			var ast = parser.typeParse('var a = 1; a = "b";');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			//expect(parser.traverseAST).to.not.throw();
+			//parser.traverseAST(spy, ast);
+			//console.log(spy.callCount);
+			//expect(spy.callCount).to.equal(25);
+			//console.log(JSON.stringify(ast, null, 4));
 			
 		});
 	});
