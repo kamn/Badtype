@@ -43,7 +43,7 @@ describe('Parser', function(){
 			});
 
 		it('should traverse a tree and test', function(){
-			var ast = parser.typeParse('(function(){var a = 5;}())');
+			var ast = parser.typeParse('var a = 1; a = "b";');
 			//var ast = parser.typeParse('function(){ var f = [], a = 5; \n var b = "z"; }');
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
@@ -59,7 +59,7 @@ describe('Parser', function(){
 			var ast = parser.parse('var a = 5');
 			var declarator = ast.body[0].declarations[0];
 
-			var type = parser.getDeclaratorType(declarator);
+			var type = parser.getDeclaratorTypeFromInit(declarator);
 			expect(type).to.equal('Number');
 		});
 
@@ -67,7 +67,7 @@ describe('Parser', function(){
 			var ast = parser.parse('var a = "a"');
 			var declarator = ast.body[0].declarations[0];
 
-			var type = parser.getDeclaratorType(declarator);
+			var type = parser.getDeclaratorTypeFromInit(declarator);
 			expect(type).to.equal('String');
 
 		});
@@ -76,7 +76,7 @@ describe('Parser', function(){
 			var ast = parser.parse('var a = {}');
 			var declarator = ast.body[0].declarations[0];
 
-			var type = parser.getDeclaratorType(declarator);
+			var type = parser.getDeclaratorTypeFromInit(declarator);
 			expect(type).to.equal('Object');
 		});
 
@@ -84,7 +84,7 @@ describe('Parser', function(){
 			var ast = parser.parse('var a = []');
 			var declarator = ast.body[0].declarations[0];
 
-			var type = parser.getDeclaratorType(declarator);
+			var type = parser.getDeclaratorTypeFromInit(declarator);
 			expect(type).to.equal('Array');
 		});
 
@@ -92,7 +92,7 @@ describe('Parser', function(){
 			var ast = parser.parse('var a = function(){}');
 			var declarator = ast.body[0].declarations[0];
 
-			var type = parser.getDeclaratorType(declarator);
+			var type = parser.getDeclaratorTypeFromInit(declarator);
 			expect(type).to.equal('Function');
 		});
 

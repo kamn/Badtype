@@ -66,7 +66,7 @@ var parseBadtypeComment = function(str){
 
 var typeAssignment = function(node){
 	if(isDeclarator(node)){
-		var type = getDeclaratorType(node);
+		var type = getDeclaratorTypeFromInit(node);
 
 		node.id.badtype = {
 			type: type
@@ -74,13 +74,31 @@ var typeAssignment = function(node){
 	}
 };
 
-var typeCheck = function(){}
+var typeCheckParse = function(ast, prevBlocks){
+	//Get a block level ast
+	//prevBlocks are the previous scopes in an array
+
+
+	//TODO: Get the blockVars
+	var blockVars = getBlockVars(ast, {});
+};
+
+var typeCheckFn = function(node){
+	if(node.type === 'FunctionExpression'){
+		return false;
+	}
+	
+	
+}
 
 
 //:! (AST, Obj) -> Obj
 var getBlockVars = function(ast, varObj){
 	//TODO: Scan entire block.
 	//TODO: Skip functions
+	//TODO: Also I like the bect idea for lookup it's not the best idea...
+	//TODO: Make a deep copy of the object and reset it after a set in the tree?
+	//TODO: 
 
 	var getBlockVariable = function(node){
 		if(node.type === 'FunctionExpression'){
@@ -138,11 +156,15 @@ var isDeclarator = function(node){
 };
 
 
+var getDeclaratorTypeFromInit = function (node){
+	return getDeclaratorType(node.init);
+};
+
 //:! (AST) -> String
 var getDeclaratorType = function(node){
-	var type = node.init.type;
+	var type = node.type;
 	if(type === 'Literal'){
-		var val = node.init.value;
+		var val = node.value;
 		if(typeof val === 'number'){
 			return 'Number';
 		}else if(typeof val === 'string'){
@@ -155,7 +177,7 @@ var getDeclaratorType = function(node){
 	}else if(type === 'FunctionExpression'){
 		return 'Function';//Determine type?
 	}
-}
+};
 
 
 
@@ -168,4 +190,5 @@ module.exports.isBadtypeNewTypeComment = isBadtypeNewTypeComment;
 module.exports.getBadType = getBadType;
 module.exports.traverseAST = traverseAST;
 module.exports.getDeclaratorType = getDeclaratorType;
-module.exports.getBlockVars = getBlockVars
+module.exports.getDeclaratorTypeFromInit = getDeclaratorTypeFromInit;
+module.exports.getBlockVars = getBlockVars;
