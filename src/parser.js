@@ -78,10 +78,10 @@ var typeCheckParse = function(ast, prevBlocks){
 	//Get a block level ast
 	//prevBlocks are the previous scopes in an array
 
-
 	//TODO: Get the blockVars
 	var blockVars = getBlockVars(ast, {});
-
+	//TODO: search prevBlocks for vars and functions out of scope
+	prevBlocks.push(blockVars);
 
 	var typeCheckFn = function(node){
 		if(node.type === 'FunctionExpression'){
@@ -135,12 +135,11 @@ var getBlockVars = function(ast, varObj){
 };
 
 var traverseWithStack = function(){
-
 	var stack = [];
 	var walk = function(){
-
+		stack.push(1);
 	};
-
+	walk();
 };
 
 //:! (Function, AST) -> ?
@@ -151,19 +150,23 @@ var traverseAST = function(fn, node){
 
 	var cont = fn(node);
 
+	var walk = function(n){
+		traverseAST(fn, n);
+	};
+
 	//TODO: Have the function return true or false
 	if(cont === false){
 		return;
 	}
 
 	for (var key in node){
-		var child = node[key];
-		if(Array.isArray(child)){
-			child.forEach(function(n){
-				traverseAST(fn, n);
-			});
-		} else if(child != null && typeof child.type === 'string'){
-			traverseAST(fn, child);
+		if(node.hasOwnProperty(key)){
+			var child = node[key];
+			if(Array.isArray(child)){
+				child.forEach(walk);
+			} else if(child !== null && child !== undefined && typeof child.type === 'string'){
+				walk(child);
+			}
 		}
 	}
 };
@@ -208,6 +211,7 @@ module.exports.parseBadtypeComment = parseBadtypeComment;
 module.exports.isBadtypeNewTypeComment = isBadtypeNewTypeComment;
 module.exports.getBadType = getBadType;
 module.exports.traverseAST = traverseAST;
+module.exports.traverWithStack = traverseWithStack;
 module.exports.getDeclaratorType = getDeclaratorType;
 module.exports.getDeclaratorTypeFromInit = getDeclaratorTypeFromInit;
 module.exports.getBlockVars = getBlockVars;
