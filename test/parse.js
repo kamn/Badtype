@@ -109,13 +109,14 @@ describe('Parser', function(){
 
 		it('should detect a variable is being reassigned to another type', function(){
 			var ast = parser.typeParse('var a = 1; a = "b";');
+			//parser.typeCheckParse( ast, []);
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
-			//expect(parser.traverseAST).to.not.throw();
-			//parser.traverseAST(spy, ast);
-			//console.log(spy.callCount);
-			//expect(spy.callCount).to.equal(25);
-			//console.log(JSON.stringify(ast, null, 4));
-			
+		});
+		it('should detect a variable in parent scope being reassigned', function(){
+			var ast = parser.typeParse('var a = 1; function test(){ a = "b"}');
+			parser.typeCheckParse( ast, []);
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+
 		});
 	});
 });

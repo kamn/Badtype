@@ -4,7 +4,7 @@
   "description": "A javascript optional type system",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test test/types test/src --require test/helpers/chai.js",
+    "test": "mocha test test/src --require test/helpers/chai.js",
     "jshint": "jshint . --exclude ./node_modules ; true"
   },
   "repository": {

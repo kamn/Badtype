@@ -84,7 +84,8 @@ var typeCheckParse = function(ast, prevBlocks){
 	prevBlocks.push(blockVars);
 
 	var typeCheckFn = function(node){
-		if(node.type === 'FunctionExpression'){
+		if(node.type === 'FunctionExpression' ||
+			node.type === 'FunctionDeclaration'){
 			return false;
 		}
 
@@ -119,7 +120,8 @@ var getBlockVars = function(ast, varObj){
 	//TODO: 
 
 	var getBlockVariable = function(node){
-		if(node.type === 'FunctionExpression'){
+		if(node.type === 'FunctionExpression' ||
+			node.type === 'FunctionDeclaration'){
 			return false;
 		}
 
@@ -156,7 +158,7 @@ var traverseAST = function(fn, node){
 
 	//TODO: Have the function return true or false
 	if(cont === false){
-		return;
+		return false;
 	}
 
 	for (var key in node){
