@@ -112,14 +112,21 @@ describe('Parser', function(){
 			//parser.typeCheckParse( ast, []);
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 		});
+
 		it('should detect a variable in parent scope being reassigned', function(){
 			var ast = parser.typeParse('var a = 1; function test(){ a = "b"}');
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 
 		});
+
 		it('should allow a variable with same name in sub scope to be different type', function(){
 			var ast = parser.typeParse('var a = 1; function test(){ var a = "b"; a = "c"}');
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+		});
+
+		it('should detect wrong assignment is deep sub functions', function(){
+			var ast = parser.typeParse('var a = 1; function test(){ var b = "a"; function c(){  a = "B";}}');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 		});
 	});
 });

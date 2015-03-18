@@ -111,6 +111,10 @@ var typeCheckParse = function(ast, prevBlocks){
 
 			//TODO: Search the chain
 			var typeInfo = searchForVar(ident, prevBlocks);
+
+			if(typeInfo === undefined){
+				return;
+			}
 			//Check type
 			var type = getDeclaratorType(node.right);
 
@@ -130,7 +134,7 @@ var typeCheckParse = function(ast, prevBlocks){
 //
 var searchForVar = function(ident, varBlocks){
 	return varBlocks.reduce(function(r, x){
-		return x[ident];
+		return x[ident] === undefined ? r: x[ident];
 	}, undefined)
 };
 
