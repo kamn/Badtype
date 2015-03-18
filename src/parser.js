@@ -112,8 +112,6 @@ var typeCheckParse = function(ast, prevBlocks){
 			//TODO: Search the chain
 			var typeInfo = searchForVar(ident, prevBlocks);
 
-			console.log(prevBlocks);
-			console.log(typeInfo);
 			//Check type
 			var type = getDeclaratorType(node.right);
 
