@@ -1,6 +1,15 @@
 'use strict';
 var esprima = require('esprima');
 
+
+//A type to throw
+function TypeReassignment(msg){
+	this.name = 'TypeReassignment';
+	this.message = (msg || "");
+}
+TypeReassignment.prototype = new Error();
+
+
 //Generates an ast from esprima
 
 //:! data AST = Obj
@@ -9,7 +18,8 @@ var esprima = require('esprima');
 var parse = function(code){
 	return esprima.parse(code, {
 		comment: true,
-		attachComment: true
+		attachComment: true,
+		loc: true
 	});
 };
 
@@ -120,7 +130,7 @@ var typeCheckParse = function(ast, prevBlocks){
 
 			//Check type
 			if(type !== typeInfo.id.badtype.type){
-				throw Error('Mismatch');
+				throw new TypeReassignment("Have useful info");
 			}
 		}
 	};
