@@ -86,6 +86,22 @@ var typeCheckParse = function(ast, prevBlocks){
 	var typeCheckFn = function(node){
 		if(node.type === 'FunctionExpression' ||
 			node.type === 'FunctionDeclaration'){
+			//*
+			var walk = function(n){
+				traverseAST(typeCheckFn, n);
+			}
+;
+			for (var key in node){
+				if(node.hasOwnProperty(key)){
+					var child = node[key];
+					if(Array.isArray(child)){
+						child.forEach(walk);
+					} else if(child !== null && child !== undefined && typeof child.type === 'string'){
+						walk(child)
+					}
+				}
+			}//*/
+
 			return false;
 		}
 
@@ -94,8 +110,10 @@ var typeCheckParse = function(ast, prevBlocks){
 			var ident = node.left.name;
 
 			//TODO: Search the chain
-			var typeInfo = blockVars[ident];
+			var typeInfo = searchForVar(ident, prevBlocks);
 
+			console.log(prevBlocks);
+			console.log(typeInfo);
 			//Check type
 			var type = getDeclaratorType(node.right);
 
@@ -109,6 +127,13 @@ var typeCheckParse = function(ast, prevBlocks){
 	traverseAST(typeCheckFn, ast);
 
 	return true;
+};
+
+//
+var searchForVar = function(ident, varBlocks){
+	return varBlocks.reduce(function(r, x){
+		return x[ident];
+	}, undefined)
 };
 
 //:! (AST, Obj) -> Obj

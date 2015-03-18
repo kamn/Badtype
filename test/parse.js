@@ -114,7 +114,6 @@ describe('Parser', function(){
 		});
 		it('should detect a variable in parent scope being reassigned', function(){
 			var ast = parser.typeParse('var a = 1; function test(){ a = "b"}');
-			parser.typeCheckParse( ast, []);
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 
 		});
