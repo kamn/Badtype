@@ -88,7 +88,7 @@ var typeCheckParse = function(ast, prevBlocks){
 			node.type === 'FunctionDeclaration'){
 			//*
 			var walk = function(n){
-				traverseAST(typeCheckFn, n);
+				typeCheckParse(n, prevBlocks);
 			}
 ;
 			for (var key in node){
@@ -111,7 +111,6 @@ var typeCheckParse = function(ast, prevBlocks){
 
 			//TODO: Search the chain
 			var typeInfo = searchForVar(ident, prevBlocks);
-
 			//Check type
 			var type = getDeclaratorType(node.right);
 
@@ -123,6 +122,7 @@ var typeCheckParse = function(ast, prevBlocks){
 	};
 
 	traverseAST(typeCheckFn, ast);
+	prevBlocks.pop();
 
 	return true;
 };

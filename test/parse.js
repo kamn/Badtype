@@ -117,6 +117,10 @@ describe('Parser', function(){
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 
 		});
+		it('should allow a variable with same name in sub scope to be different type', function(){
+			var ast = parser.typeParse('var a = 1; function test(){ var a = "b"; a = "c"}');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+		});
 	});
 });
 
