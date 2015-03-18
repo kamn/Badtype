@@ -99,15 +99,15 @@ var typeCheckParse = function(ast, prevBlocks){
 			//*
 			var walk = function(n){
 				typeCheckParse(n, prevBlocks);
-			}
-;
+			};
+
 			for (var key in node){
 				if(node.hasOwnProperty(key)){
 					var child = node[key];
 					if(Array.isArray(child)){
 						child.forEach(walk);
 					} else if(child !== null && child !== undefined && typeof child.type === 'string'){
-						walk(child)
+						walk(child);
 					}
 				}
 			}//*/
@@ -145,7 +145,7 @@ var typeCheckParse = function(ast, prevBlocks){
 var searchForVar = function(ident, varBlocks){
 	return varBlocks.reduce(function(r, x){
 		return x[ident] === undefined ? r: x[ident];
-	}, undefined)
+	}, undefined);
 };
 
 //:! (AST, Obj) -> Obj

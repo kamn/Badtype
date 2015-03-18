@@ -4,8 +4,7 @@
 var fs = require('fs');
 var path = require('path');
 
-var esprima = require('esprima');
-var badtype = require('./src/parser')
+var badtype = require('./src/parser');
 
 //TODO: Take a list of files or folder
 
@@ -17,4 +16,4 @@ var data = fs.readFileSync(filepath);
 
 var parsed = badtype.typeParse(data);
 
-badtype.typeCheckParse(parsed, [])
+badtype.typeCheckParse(parsed, []);
