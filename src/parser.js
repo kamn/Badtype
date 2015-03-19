@@ -9,6 +9,11 @@ function TypeReassignment(msg){
 }
 TypeReassignment.prototype = new Error();
 
+function InvalidExpression(msg){
+	this.name = 'InvalidExpression';
+	this.message = (msg || "");
+}
+InvalidExpression.prototype = new Error();
 
 //Generates an ast from esprima
 
@@ -115,6 +120,41 @@ var typeCheckParse = function(ast, prevBlocks){
 			return false;
 		}
 
+		if(node.type === 'BinaryExpression'){
+			//TODO: Add a function to check for all binary expect +
+			if(node.operator === '-'){
+
+				var varName = null;
+				var varInfo = null;
+				var valList = [];
+				if(node.left.type === 'Identifier'){
+					varName = node.left.name;
+					varInfo = searchForVar(varName, prevBlocks);
+					//TODO: Undefined check
+					valList.push(varInfo.id.badtype.type);
+				}else if(node.left.type === 'Literal'){
+					valList.push(getDeclaratorType(node.left));
+				}
+
+				if(node.right.type === 'Identifier'){
+					varName = node.right.name;
+					varInfo = searchForVar(varName, prevBlocks);
+					//TODO: Undefined check
+					valList.push(varInfo.id.badtype.type);
+				}else if(node.right.type === 'Literal'){
+					valList.push(getDeclaratorType(node.right));
+				}
+
+				var isAllNum = valList.reduce(function(r, x){
+					return r && x === 'Number';
+				}, true);
+				//Check type
+				if(!isAllNum){
+					throw new TypeReassignment("Have useful info");
+				}
+			}
+		}
+
 		if(node.type === 'AssignmentExpression'){
 			//Get object's identity
 			var ident = node.left.name;
@@ -125,6 +165,7 @@ var typeCheckParse = function(ast, prevBlocks){
 			if(typeInfo === undefined){
 				return;
 			}
+
 			//Check type
 			var type = getDeclaratorType(node.right);
 
@@ -217,8 +258,14 @@ var isDeclarator = function(node){
 
 
 var getDeclaratorTypeFromInit = function (node){
+
+	if(node.type === 'BinaryExpression'){
+		return 'Number';
+	}
 	return getDeclaratorType(node.init);
-};
+}
+
+;
 
 //:! (AST) -> String
 var getDeclaratorType = function(node){
@@ -236,6 +283,9 @@ var getDeclaratorType = function(node){
 		return 'Array';//Determine type?
 	}else if(type === 'FunctionExpression'){
 		return 'Function';//Determine type?
+	}else if(type === 'BinaryExpression'){
+		//TODO: Check BinaryExpression
+		return 'Number';
 	}
 };
 
