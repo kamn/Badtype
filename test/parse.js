@@ -126,5 +126,27 @@ describe('Parser', function(){
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 		});
 	});
+
+	describe('Expressions', function(){
+		it('should accept valid numeric operations (-)', function(){
+			var ast = parser.typeParse('var a = 1; a = a - 1;');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+		});
+
+		it('should detect invalid numeric operations (-)', function(){
+			var ast = parser.typeParse('var a = 1; a = a - "1";');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+		});
+
+		it('should accept valid numeric operations between two vars (-)', function(){
+			var ast = parser.typeParse('var a = 1; var b = 2; a = a - b;');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+		})
+
+		it('should detect invalid numberi ops between vars (-)', function(){
+			var ast = parser.typeParse('var a = 1; var b = "2"; a = a - b;');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+		});
+	});
 });
 
