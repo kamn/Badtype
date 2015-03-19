@@ -35,7 +35,6 @@ describe('Parser', function(){
 
 		it('should traverse a tree and not fail on null', function(){
 			var ast = parser.typeParse('var a = 1; var b = "2"; var c = {}');
-			var spy = sinon.spy();
 			ast = parser.getBlockVars(ast, {});
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
@@ -43,7 +42,7 @@ describe('Parser', function(){
 			});
 
 		it('should traverse a tree and test', function(){
-			var ast = parser.typeParse('var a = 1; a = "b";');
+			//var ast = parser.typeParse('var a = 1; a = "b";');
 			//var ast = parser.typeParse('function(){ var f = [], a = 5; \n var b = "z"; }');
 			//expect(parser.traverseAST).to.not.throw();
 			//parser.traverseAST(spy, ast);
@@ -103,13 +102,11 @@ describe('Parser', function(){
 
 		it('should ignore valid assignments', function(){
 			var ast = parser.typeParse('var a = 1; a = 5;');
-			var ast = parser.typeCheckParse(ast, []);
-			//expect(parser.traverseAST).to.not.throw();
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
 		});
 
 		it('should detect a variable is being reassigned to another type', function(){
 			var ast = parser.typeParse('var a = 1; a = "b";');
-			//parser.typeCheckParse( ast, []);
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 		});
 
