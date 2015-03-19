@@ -147,6 +147,16 @@ describe('Parser', function(){
 			var ast = parser.typeParse('var a = 1; var b = "2"; a = a - b;');
 			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
 		});
+
+		it('should detect valid, multi ops (-)', function(){
+			var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3;');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+		});
+
+		it('should detect invalid, multi ops (-)', function(){
+			var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3 - "4";');
+			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+		});
 	});
 });
 
