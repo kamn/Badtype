@@ -128,34 +128,129 @@ describe('Parser', function(){
 	});
 
 	describe('Expressions', function(){
-		it('should accept valid numeric operations (-)', function(){
-			var ast = parser.typeParse('var a = 1; a = a - 1;');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
-		});
 
-		it('should detect invalid numeric operations (-)', function(){
-			var ast = parser.typeParse('var a = 1; a = a - "1";');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
-		});
+		describe('(-)', function(){
+			it('should accept valid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a - 1;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a - "1";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should accept valid numeric operations between two vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a - b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numberi ops between vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "2"; a = a - b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should detect valid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3 - "4";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 
-		it('should accept valid numeric operations between two vars (-)', function(){
-			var ast = parser.typeParse('var a = 1; var b = 2; a = a - b;');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
-		});
+			it('should allow valid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a - 1 - b - 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
 
-		it('should detect invalid numberi ops between vars (-)', function(){
-			var ast = parser.typeParse('var a = 1; var b = "2"; a = a - b;');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			it('should detect invalid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "4"; a = a - 1 - 2 - 3 - b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 		});
+		describe('(*)', function(){
+			it('should accept valid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a * 1;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a * "1";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should accept valid numeric operations between two vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a * b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numberi ops between vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "2"; a = a * b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should detect valid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a * 1 * 2 * 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a * 1 * 2 * 3 * "4";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 
-		it('should detect valid, multi ops (-)', function(){
-			var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3;');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			it('should allow valid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a * 1 * b * 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+
+			it('should detect invalid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "4"; a = a * 1 * 2 * 3 * b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 		});
+		describe('(/)', function(){
+			it('should accept valid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a / 1;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numeric operations', function(){
+				var ast = parser.typeParse('var a = 1; a = a / "1";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should accept valid numeric operations between two vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a / b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid numberi ops between vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "2"; a = a / b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
+	
+			it('should detect valid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a / 1 / 2 / 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+	
+			it('should detect invalid, multi ops', function(){
+				var ast = parser.typeParse('var a = 1; a = a / 1 / 2 / 3 / "4";');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 
-		it('should detect invalid, multi ops (-)', function(){
-			var ast = parser.typeParse('var a = 1; a = a - 1 - 2 - 3 - "4";');
-			expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			it('should allow valid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = 2; a = a / 1 / b / 3;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.not.throw();
+			});
+
+			it('should detect invalid, multi ops with vars', function(){
+				var ast = parser.typeParse('var a = 1; var b = "4"; a = a / 1 / 2 / 3 / b;');
+				expect(parser.typeCheckParse.bind(parser, ast, [])).to.throw();
+			});
 		});
 	});
 });
