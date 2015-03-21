@@ -122,7 +122,9 @@ var typeCheckParse = function(ast, prevBlocks){
 
 		if(node.type === 'BinaryExpression'){
 			//TODO: Add a function to check for all binary expect +
-			if(node.operator === '-'){
+			if(node.operator === '-' ||
+				node.operator === '*' ||
+				node.operator === '/'){
 
 				var varName = null;
 				var varInfo = null;
