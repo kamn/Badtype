@@ -1,6 +1,14 @@
 'use strict';
 var esprima = require('esprima');
 
+var TYPES = {
+	NUMBER: 'Number',
+	STRING: 'String',
+	ARRAY: 'Array',
+	OBJECT: 'Object',
+	FUNCTION: 'Function'
+};
+
 
 //A type to throw
 function TypeReassignment(msg){
@@ -275,19 +283,19 @@ var getDeclaratorType = function(node){
 	if(type === 'Literal'){
 		var val = node.value;
 		if(typeof val === 'number'){
-			return 'Number';
+			return TYPES.NUMBER;
 		}else if(typeof val === 'string'){
-			return 'String';
+			return TYPES.STRING;
 		}
 	}else if(type === 'ObjectExpression'){
-		return 'Object';
+		return TYPES.OBJECT;
 	}else if(type === 'ArrayExpression'){
-		return 'Array';//Determine type?
+		return TYPES.ARRAY;//Determine type?
 	}else if(type === 'FunctionExpression'){
-		return 'Function';//Determine type?
+		return TYPES.FUNCTION;//Determine type?
 	}else if(type === 'BinaryExpression'){
 		//TODO: Check BinaryExpression
-		return 'Number';
+		return TYPES.NUMBER;
 	}
 };
 
