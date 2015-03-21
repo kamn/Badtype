@@ -54,7 +54,7 @@ describe('Parser', function(){
 });
 
 	describe('Auto-detection', function(){
-		it('should detect VariableDeclarator as Number', function(){
+		it('should detect a Number', function(){
 			var ast = parser.parse('var a = 5');
 			var declarator = ast.body[0].declarations[0];
 
@@ -62,7 +62,7 @@ describe('Parser', function(){
 			expect(type).to.equal('Number');
 		});
 
-		it('should detect as String', function(){
+		it('should detect a String', function(){
 			var ast = parser.parse('var a = "a"');
 			var declarator = ast.body[0].declarations[0];
 
@@ -71,7 +71,16 @@ describe('Parser', function(){
 
 		});
 
-		it('should detect objects', function(){
+		it('should detect a Boolean', function(){
+			var ast = parser.parse('var a = true;');
+			var declarator = ast.body[0].declarations[0];
+
+			var type = parser.getDeclaratorTypeFromInit(declarator);
+			expect(type).to.equal('Boolean');
+		});
+
+
+		it('should detect a Object', function(){
 			var ast = parser.parse('var a = {}');
 			var declarator = ast.body[0].declarations[0];
 
@@ -79,7 +88,7 @@ describe('Parser', function(){
 			expect(type).to.equal('Object');
 		});
 
-		it('should detect arrays', function(){
+		it('should detect an Array', function(){
 			var ast = parser.parse('var a = []');
 			var declarator = ast.body[0].declarations[0];
 
@@ -87,7 +96,7 @@ describe('Parser', function(){
 			expect(type).to.equal('Array');
 		});
 
-		it('should detect function', function(){
+		it('should detect a Function', function(){
 			var ast = parser.parse('var a = function(){}');
 			var declarator = ast.body[0].declarations[0];
 

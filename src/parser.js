@@ -4,6 +4,7 @@ var esprima = require('esprima');
 var TYPES = {
 	NUMBER: 'Number',
 	STRING: 'String',
+	BOOLEAN: 'Boolean',
 	ARRAY: 'Array',
 	OBJECT: 'Object',
 	FUNCTION: 'Function'
@@ -286,6 +287,8 @@ var getDeclaratorType = function(node){
 			return TYPES.NUMBER;
 		}else if(typeof val === 'string'){
 			return TYPES.STRING;
+		}else if(typeof val === 'boolean'){
+			return TYPES.BOOLEAN;
 		}
 	}else if(type === 'ObjectExpression'){
 		return TYPES.OBJECT;
