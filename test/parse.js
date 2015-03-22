@@ -21,6 +21,11 @@ describe('Parser', function(){
 		expect(val).to.equal('Number');
 	});
 
+	it('should detect a badtype function', function(){
+		var val = parser.isBadtypeFunctionComment(':! (Number, String) -> Boolean');
+		expect(val).to.be.true;
+	});
+
 	describe('Travere', function(){
 		it('should traverse the tree', function(){
 			var ast = parser.parse('var a = 5;');

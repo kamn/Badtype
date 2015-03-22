@@ -59,7 +59,18 @@ var isBadtypeComment = function(str){
 //:! (Num, Str, Fn) -> Obj
 //Checks if it s a function type definition
 var isBadtypeFunctionComment = function(str){
-	return str;
+	return str.indexOf('(') < str.indexOf(')') &&
+		str.indexOf(')') < str.indexOf('->');
+};
+
+var parseBadtypeFunction = function(str){
+	//TODO: Start at the first '('
+	//TODO: Get the string and split along ','
+	//TODO: Trim each string
+	//TODO: Continue though list until ')'
+	//TODO: Check '->' is present
+	//TODO: Parse value after '->'
+	//TODO: Allow recursive Types
 };
 
 //Note: Example comment
@@ -303,7 +314,7 @@ var getDeclaratorType = function(node){
 };
 
 
-
+module.exports.TYPES = TYPES;
 module.exports.parse = parse;
 module.exports.typeParse = typeParse;
 module.exports.typeCheckParse = typeCheckParse;
