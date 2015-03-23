@@ -63,7 +63,55 @@ var isBadtypeFunctionComment = function(str){
 		str.indexOf(')') < str.indexOf('->');
 };
 
+var getFnArgs = function(str){
+	// '(Number, String)' -> ['Number', 'String']
+	// '((*) -> Number, String) -> ['(*)-> Number', 'String'];
+	// '((*) -> ((Number) -> String))'
+
+	var startIndx = -1;
+	var endIndx = -1;
+
+	var startCrly = 0;
+	var endCrly = 0;
+
+	for(var i = 0, len = str.length; i < len; i++){
+		if(startIndx === -1){
+			if(str[i] === '('){
+				startIndx = i;
+				startCrly++;
+			}
+		}
+
+		if(str[i] === '('){
+
+		}
+
+		if(str[i] === ')'){
+
+		}
+
+		
+	}
+
+	if(startIndx === -1 || endIndx === -1){
+		//throw error
+	}
+
+};
+
 var parseBadtypeFunction = function(str){
+
+	//Consider the cases ...
+	// (Number) -> String
+	// ((Number) -> String) -> ((Number) -> Number)
+	var commaSep = str.split(',');
+	var spaceRmv = str.map(function(x){
+		return x.trim();
+	});
+	
+	//Find the first '('
+
+
 	//TODO: Start at the first '('
 	//TODO: Get the string and split along ','
 	//TODO: Trim each string
@@ -71,6 +119,18 @@ var parseBadtypeFunction = function(str){
 	//TODO: Check '->' is present
 	//TODO: Parse value after '->'
 	//TODO: Allow recursive Types
+
+	//TODO: 
+/*
+{
+	type: 'Function'
+	args: [
+		{'Number'...},
+		{'String'...}
+	],
+	result: {...}
+}
+*/
 };
 
 //Note: Example comment
