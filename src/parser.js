@@ -75,22 +75,23 @@ var getFnArgs = function(str){
 	var endCrly = 0;
 
 	for(var i = 0, len = str.length; i < len; i++){
+
+		if(str[i] === '('){
+			startCrly++;
+		}
+		if(str[i] === ')'){
+			endCrly++;
+		}
+
 		if(startIndx === -1){
 			if(str[i] === '('){
 				startIndx = i;
-				startCrly++;
 			}
+
+		}else if((startCrly === endCrly)){
+			endIndx = i;
+			return str.substring(startIndx + 1, endIndx);
 		}
-
-		if(str[i] === '('){
-
-		}
-
-		if(str[i] === ')'){
-
-		}
-
-		
 	}
 
 	if(startIndx === -1 || endIndx === -1){
@@ -388,3 +389,4 @@ module.exports.traverWithStack = traverseWithStack;
 module.exports.getDeclaratorType = getDeclaratorType;
 module.exports.getDeclaratorTypeFromInit = getDeclaratorTypeFromInit;
 module.exports.getBlockVars = getBlockVars;
+module.exports.getFnArgs = getFnArgs;
