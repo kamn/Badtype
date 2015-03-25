@@ -26,6 +26,21 @@ describe('Parser', function(){
 		expect(val).to.be.true;
 	});
 
+	it('should get args from function (simple)', function(){
+		var args = parser.getFnArgs2('(Number, String) -> Boolean');
+		expect(args).to.eql(['Number', 'String']);
+	});
+
+	it('should get args from function (with function)', function(){
+		var args = parser.getFnArgs2('((Number) -> String, String) -> Boolean');
+		expect(args).to.eql(['(Number)->String', 'String']);
+	});
+
+	it('should get args from function (with another function)', function(){
+		var args = parser.getFnArgs2('((Number, String) -> Boolean, String) -> Boolean');
+		expect(args).to.eql(['(Number, String)->Boolean', 'String']);
+	});
+
 	describe('Travere', function(){
 		it('should traverse the tree', function(){
 			var ast = parser.parse('var a = 5;');

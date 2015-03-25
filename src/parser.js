@@ -63,6 +63,41 @@ var isBadtypeFunctionComment = function(str){
 		str.indexOf(')') < str.indexOf('->');
 };
 
+var getFnArgs2 = function(str){
+	var strArr = str.split('');
+	var startCrly = 0;
+	var endCrly = 0;
+
+	var args = strArr.reduce(function(r, c){
+		if(c === '('){
+			startCrly++;
+		}
+		if(c === ')'){
+			endCrly++;
+		}
+
+
+		if(startCrly === endCrly + 1){
+			if( c === '(' || c === ' '){
+				return r;
+			}
+			if(c === ','){
+				r.push('');
+				return r;
+			}else{
+				r[r.length - 1] = r[r.length - 1].concat(c);
+				return r;
+			}
+		}else if(startCrly > endCrly + 1){
+			r[r.length - 1] = r[r.length - 1].concat(c);
+		}
+
+		return r;
+	},['']);
+
+	return args;
+};
+
 var getFnArgs = function(str){
 	// '(Number, String)' -> ['Number', 'String']
 	// '((*) -> Number, String) -> ['(*)-> Number', 'String'];
@@ -390,3 +425,4 @@ module.exports.getDeclaratorType = getDeclaratorType;
 module.exports.getDeclaratorTypeFromInit = getDeclaratorTypeFromInit;
 module.exports.getBlockVars = getBlockVars;
 module.exports.getFnArgs = getFnArgs;
+module.exports.getFnArgs2 = getFnArgs2;
